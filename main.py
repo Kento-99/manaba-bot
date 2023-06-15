@@ -21,7 +21,7 @@ def task():
  
  line_bot_api.push_message(USER_ID, TextSendMessage(text=text))
 
-schedule.every(10).seconds.do(task)  # 関数taskを、10秒毎に実行する
+schedule.every(1).hours.do(task)  # 関数taskを、一時間毎に実行する
 
 while True:
  schedule.run_pending()
