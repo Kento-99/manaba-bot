@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import configparser
-
+import time
 
 #ConfigParserオブジェクトを生成
 config = configparser.ConfigParser()
@@ -25,15 +25,28 @@ options.add_argument('--start-maximized')
 driver = webdriver.Chrome(options=options)
 
 # manabaのログインページを開く
-driver.get('https://sso.ritsumei.ac.jp/')
+driver.get('https://www.ritsumei.ac.jp/ct/')
+           
+#manaba+Rボタンをクリック
+sign_in_button = driver.find_element(By.ID, 'btnLogin')
+sign_in_button.click()
+
+# ログイン後のページを開く
+wait = WebDriverWait(driver,20)
+wait.until(EC.title_is('Web Single Sign On | 立命館大学'))
+
+time.sleep(5)
 
 # ユーザー名とパスワードを入力してログイン
+wait.until(EC.visibility_of_element_located((By.ID, 'User_ID')))
 username_input = driver.find_element(By.ID, 'User_ID') 
 username_input.send_keys(username)
+wait.until(EC.visibility_of_element_located((By.ID, 'Password')))
 password_input = driver.find_element(By.ID, 'Password')  
 password_input.send_keys(password)
 
 # サインインボタンをクリック
+wait.until(EC.element_to_be_clickable((By.ID, 'Submit')))
 sign_in_button = driver.find_element(By.ID, 'Submit')
 sign_in_button.click()
 
