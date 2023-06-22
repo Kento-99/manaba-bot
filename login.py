@@ -40,7 +40,37 @@ password_input.send_keys(password)
 wait.until(EC.element_to_be_clickable((By.ID, 'Submit')))
 sign_in_button = driver.find_element(By.ID, 'Submit')
 sign_in_button.click()
-
-# ログイン後のページを開く
 wait = WebDriverWait(driver, 10)
-wait.until(EC.title_contains('manaba-home'))
+# ページ遷移の完了を待機
+wait.until(EC.staleness_of(sign_in_button))
+
+# HTMLを再読み込み
+driver.refresh()
+html = driver.page_source
+
+#マイページボタンをクリック
+wait.until(EC.element_to_be_clickable((By.ID, 'mypagelogo')))
+mypage_button = driver.find_element(By.ID, 'mypagelogo')
+mypage_button.click()
+# ページ遷移の完了を待機
+wait.until(EC.staleness_of(mypage_button))
+
+# HTMLを再読み込み
+driver.refresh()
+html = driver.page_source
+
+# 未提出課題の<a>タグをクリック
+link = driver.find_element(By.XPATH, '//*[@id="container"]/div[2]/div/div[4]/div[2]/div[2]/div/a')
+link.click()
+# ページ遷移の完了を待機
+wait.until(EC.staleness_of(link))
+
+# HTMLを再読み込み
+driver.refresh()
+html = driver.page_source
+
+# <td>タグを指定して要素を取得
+td_element = driver.find_element(By.TAG_NAME, 'td')
+
+# <td>タグの中身を取得して出力
+print(td_element.text)
