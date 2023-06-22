@@ -112,9 +112,9 @@ td_texts_report = [td.text for td in td_tags_report]  # 各<td>タグのテキ�
 
 # 結果を出力
 for text_minitest in td_texts_minitest:
-    print(text_minitest.text)
+    print(text_minitest)
 for text_questionary in td_texts_questionary:
-    print(text_questionary.text)
+    print(text_questionary)
 for text_report in td_texts_report:
-    print(text_report.text)
+    print(text_report)
 
