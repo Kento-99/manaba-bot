@@ -25,19 +25,10 @@ options.add_argument('--start-maximized')
 driver = webdriver.Chrome(options=options)
 
 # manabaのログインページを開く
-driver.get('https://www.ritsumei.ac.jp/ct/')
-           
-#manaba+Rボタンをクリック
-sign_in_button = driver.find_element(By.ID, 'btnLogin')
-sign_in_button.click()
-
-# ログイン後のページを開く
-wait = WebDriverWait(driver,20)
-wait.until(EC.title_is('Web Single Sign On | 立命館大学'))
-
-time.sleep(5)
+driver.get('https://ct.ritsumei.ac.jp/ct/%E3%80%8D')
 
 # ユーザー名とパスワードを入力してログイン
+wait = WebDriverWait(driver,20)
 wait.until(EC.visibility_of_element_located((By.ID, 'User_ID')))
 username_input = driver.find_element(By.ID, 'User_ID') 
 username_input.send_keys(username)
