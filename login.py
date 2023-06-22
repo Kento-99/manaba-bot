@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import configparser
-import time
+from bs4 import BeautifulSoup
 
 #ConfigParserオブジェクトを生成
 config = configparser.ConfigParser()
@@ -60,17 +60,61 @@ driver.refresh()
 html = driver.page_source
 
 # 未提出課題の<a>タグをクリック
-link = driver.find_element(By.XPATH, '//*[@id="container"]/div[2]/div/div[4]/div[2]/div[2]/div/a')
-link.click()
+minitest = driver.find_element(By.XPATH, '//*[@id="container"]/div[2]/div/div[4]/div[2]/div[2]/div/a')
+minitest.click()
 # ページ遷移の完了を待機
-wait.until(EC.staleness_of(link))
+wait.until(EC.staleness_of(minitest))
 
 # HTMLを再読み込み
 driver.refresh()
 html = driver.page_source
 
-# <td>タグを指定して要素を取得
-td_element = driver.find_element(By.TAG_NAME, 'td')
+# BeautifulSoupでHTMLを解析
+soup1 = BeautifulSoup(html, 'html.parser')
 
-# <td>タグの中身を取得して出力
-print(td_element.text)
+# <td>タグを検索してテキストを取得
+td_tags_minitest = soup1.find_all('td')  # 全ての<td>タグを取得
+td_texts_minitest = [td.text for td in td_tags_minitest]  # 各<td>タグのテキストを取得
+
+#アンケートの<a>タグをクリック
+questionary = driver.find_element(By.XPATH, '//*[@id="container"]/div[2]/div/ul/li[2]/a')
+questionary.click()
+# ページ遷移の完了を待機
+wait.until(EC.staleness_of(questionary))
+
+# HTMLを再読み込み
+driver.refresh()
+html = driver.page_source
+
+# BeautifulSoupでHTMLを解析
+soup2 = BeautifulSoup(html, 'html.parser')
+
+# <td>タグを検索してテキストを取得
+td_tags_questionary = soup2.find_all('td')  # 全ての<td>タグを取得
+td_texts_questionary = [td.text for td in td_tags_questionary]  # 各<td>タグのテキストを取得
+
+#レポートの<a>タグをクリック
+report = driver.find_element(By.XPATH, '//*[@id="container"]/div[2]/div/ul/li[3]/a')
+report.click()
+# ページ遷移の完了を待機
+wait.until(EC.staleness_of(report))
+
+# HTMLを再読み込み
+driver.refresh()
+html = driver.page_source
+
+# BeautifulSoupでHTMLを解析
+soup3 = BeautifulSoup(html, 'html.parser')
+
+# <td>タグを検索してテキストを取得
+td_tags_report = soup3.find_all('td')  # 全ての<td>タグを取得
+td_texts_report = [td.text for td in td_tags_report]  # 各<td>タグのテキストを取得
+
+# 結果を出力
+for text_minitest in td_texts_minitest:
+    print(text_minitest.text)
+for text_questionary in td_texts_questionary:
+    print(text_questionary.text)
+for text_report in td_texts_report:
+    print(text_report.text)
+
