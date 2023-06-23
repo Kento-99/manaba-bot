@@ -142,18 +142,11 @@ for tr_tag in soup3.find_all('tr'):
 
 
 # 結果を出力
-if kadai_array1:
- for data_row1 in kadai_array1:
-    minitest_message = f'{data_row1[1]}\n {data_row1[0].strip()}\nの提出期限が迫っています。'
-    line_bot_api.push_message(USER_ID, TextSendMessage(text=minitest_message))
-if kadai_array2:
- for data_row2 in kadai_array2:
-    questionary_message = f'{data_row2[1]}\n {data_row2[0].strip()}\nの提出期限が迫っています。'
-    line_bot_api.push_message(USER_ID, TextSendMessage(text=questionary_message))
-if kadai_array3:
- for data_row3 in kadai_array3:
-    report_message = f'{data_row3[1]}\n {data_row3[0].strip()}\nの提出期限が迫っています 。'
-    line_bot_api.push_message(USER_ID, TextSendMessage(text=report_message))
+for kadai_array, category_name in [(kadai_array1, "小テスト"), (kadai_array2, "アンケート"), (kadai_array3, "レポート")]:
+    if kadai_array:
+        for data_row in kadai_array:
+            message = f'{data_row[1]}\n {data_row[0].strip()}\nの提出期限が迫っています。'
+            line_bot_api.push_message(USER_ID, TextSendMessage(text=message))
 
 #webdriverの終了処理
 driver.quit()
