@@ -72,9 +72,14 @@ html = driver.page_source
 # BeautifulSoupでHTMLを解析
 soup1 = BeautifulSoup(html, 'html.parser')
 
-# <td>タグを検索してテキストを取得
-td_tags_minitest = soup1.find_all('td')  # 全ての<td>タグを取得
-td_texts_minitest = [td.text for td in td_tags_minitest]  # 各<td>タグのテキストを取得
+# trタグごとに中のtdタグの情報を取得し、配列に折りたたむ
+kadai_array1 = []
+
+for tr_tag in soup1.find_all('tr'):
+    td_tags = tr_tag.find_all('td')
+    minitest_data = [td.text for td in td_tags]
+    kadai_array1.append(minitest_data)
+
 
 #アンケートの<a>タグをクリック
 questionary = driver.find_element(By.XPATH, '//*[@id="container"]/div[2]/div/ul/li[2]/a')
@@ -89,9 +94,14 @@ html = driver.page_source
 # BeautifulSoupでHTMLを解析
 soup2 = BeautifulSoup(html, 'html.parser')
 
-# <td>タグを検索してテキストを取得
-td_tags_questionary = soup2.find_all('td')  # 全ての<td>タグを取得
-td_texts_questionary = [td.text for td in td_tags_questionary]  # 各<td>タグのテキストを取得
+# trタグごとに中のtdタグの情報を取得し、配列に折りたたむ
+kadai_array2 = []
+
+for tr_tag in soup2.find_all('tr'):
+    td_tags = tr_tag.find_all('td')
+    questionary_data = [td.text for td in td_tags]
+    kadai_array2.append(questionary_data)
+
 
 #レポートの<a>タグをクリック
 report = driver.find_element(By.XPATH, '//*[@id="container"]/div[2]/div/ul/li[3]/a')
@@ -106,15 +116,19 @@ html = driver.page_source
 # BeautifulSoupでHTMLを解析
 soup3 = BeautifulSoup(html, 'html.parser')
 
-# <td>タグを検索してテキストを取得
-td_tags_report = soup3.find_all('td')  # 全ての<td>タグを取得
-td_texts_report = [td.text for td in td_tags_report]  # 各<td>タグのテキストを取得
+# trタグごとに中のtdタグの情報を取得し、配列に折りたたむ
+kadai_array3 = []
+
+for tr_tag in soup3.find_all('tr'):
+    td_tags = tr_tag.find_all('td')
+    report_data = [td.text for td in td_tags]
+    kadai_array3.append(report_data)
 
 # 結果を出力
-for text_minitest in td_texts_minitest:
-    print(text_minitest)
-for text_questionary in td_texts_questionary:
-    print(text_questionary)
-for text_report in td_texts_report:
-    print(text_report)
+for data_row1 in kadai_array1:
+    print(data_row1)
+for data_row2 in kadai_array2:
+    print(data_row2)
+for data_row3 in kadai_array3:
+    print(data_row3)
 
