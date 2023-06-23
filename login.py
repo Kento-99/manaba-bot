@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import configparser
 from bs4 import BeautifulSoup
+import datetime
 
 #ConfigParserオブジェクトを生成
 config = configparser.ConfigParser()
@@ -73,12 +74,17 @@ html = driver.page_source
 soup1 = BeautifulSoup(html, 'html.parser')
 
 # trタグごとに中のtdタグの情報を取得し、配列に折りたたむ
+#課題の期限を読み取り一日前に迫っている場合配列をkadai_arrayに追加する
 kadai_array1 = []
+today = datetime.date.today()
 
 for tr_tag in soup1.find_all('tr'):
     td_tags = tr_tag.find_all('td')
     minitest_data = [td.text for td in td_tags]
-    kadai_array1.append(minitest_data)
+    if len(minitest_data) > 2 and minitest_data[2] != '期限' and minitest_data[2] != '':
+     deadline = datetime.datetime.strptime(minitest_data[2], '%Y-%m-%d %H:%M').date()
+     if deadline - today == datetime.timedelta(days=1):
+      kadai_array1.append(minitest_data)
 
 
 #アンケートの<a>タグをクリック
@@ -100,7 +106,10 @@ kadai_array2 = []
 for tr_tag in soup2.find_all('tr'):
     td_tags = tr_tag.find_all('td')
     questionary_data = [td.text for td in td_tags]
-    kadai_array2.append(questionary_data)
+    if len(questionary_data) > 2 and questionary_data[2] != '期限' and questionary_data[2] != '':
+     deadline = datetime.datetime.strptime(questionary_data[2], '%Y-%m-%d %H:%M').date()
+     if deadline - today == datetime.timedelta(days=1):
+      kadai_array2.append(questionary_data)
 
 
 #レポートの<a>タグをクリック
@@ -122,13 +131,20 @@ kadai_array3 = []
 for tr_tag in soup3.find_all('tr'):
     td_tags = tr_tag.find_all('td')
     report_data = [td.text for td in td_tags]
-    kadai_array3.append(report_data)
+    if len(report_data) > 2 and report_data[2] != '期限' and report_data[2] != '':
+     deadline = datetime.datetime.strptime(report_data[2], '%Y-%m-%d %H:%M').date()
+     if deadline - today == datetime.timedelta(days=1): #課題の期限を読み取り、一日以内の場合kadai_arrayに追加する
+      kadai_array3.append(report_data)
+
 
 # 結果を出力
 for data_row1 in kadai_array1:
-    print(data_row1)
+    minitest_message = f'{data_row1[1]}{data_row1[0]} の提出期限が迫っています。'
+    print(minitest_message)
 for data_row2 in kadai_array2:
-    print(data_row2)
+    questionary_message = f'{data_row2[1]}{data_row2[0]} の提出期限が迫っています。'
+    print(questionary_message)
 for data_row3 in kadai_array3:
-    print(data_row3)
+    report_message = f'{data_row3[1]}{data_row3[0]} の提出期限が迫っています。'
+    print(report_message)
 
