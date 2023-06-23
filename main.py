@@ -141,7 +141,7 @@ for tr_tag in soup3.find_all('tr'):
       kadai_array3.append(report_data)
 
 
-# 結果を出力
+# 結果をlinebotが送信
 for kadai_array, category_name in [(kadai_array1, "小テスト"), (kadai_array2, "アンケート"), (kadai_array3, "レポート")]:
     if kadai_array:
         for data_row in kadai_array:
