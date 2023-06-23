@@ -145,15 +145,15 @@ for tr_tag in soup3.find_all('tr'):
 
 # 結果を出力
 for data_row1 in kadai_array1:
-    minitest_message = f'{data_row1[1]}{data_row1[0]} の提出期限が迫っています。'
+    minitest_message = f'{data_row1[1]}\n {data_row1[0].strip()}\nの提出期限が迫っています。'
     line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
     line_bot_api.push_message(USER_ID, TextSendMessage(text=minitest_message))
 for data_row2 in kadai_array2:
-    questionary_message = f'{data_row2[1]}{data_row2[0]} の提出期限が迫っています。'
+    questionary_message = f'{data_row2[1]}\n {data_row2[0].strip()}\nの提出期限が迫っています。'
     line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
     line_bot_api.push_message(USER_ID, TextSendMessage(text=questionary_message))
 for data_row3 in kadai_array3:
-    report_message = f'{data_row3[1]}{data_row3[0]} の提出期限が迫っています 。'
+    report_message = f'{data_row3[1]}\n {data_row3[0].strip()}\nの提出期限が迫っています 。'
     line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
     line_bot_api.push_message(USER_ID, TextSendMessage(text=report_message))
 
