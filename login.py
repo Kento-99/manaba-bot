@@ -9,12 +9,18 @@ from selenium.webdriver.common.by import By
 import configparser
 from bs4 import BeautifulSoup
 import datetime
+from linebot import LineBotApi
+from linebot.models import TextSendMessage
 
 #ConfigParserオブジェクトを生成
 config = configparser.ConfigParser()
 
 #設定ファイル読み込み
 config.read('config.ini')
+
+CHANNEL_ACCESS_TOKEN = config['DEFAULT']['CHANNEL_ACCESS_TOKEN'] 
+
+USER_ID = config['DEFAULT']['USER_ID'] 
 
 # ログインに使用するユーザー名とパスワード
 username =config['DEFAULT']['username']
@@ -140,11 +146,14 @@ for tr_tag in soup3.find_all('tr'):
 # 結果を出力
 for data_row1 in kadai_array1:
     minitest_message = f'{data_row1[1]}{data_row1[0]} の提出期限が迫っています。'
-    print(minitest_message)
+    line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
+    line_bot_api.push_message(USER_ID, TextSendMessage(text=minitest_message))
 for data_row2 in kadai_array2:
     questionary_message = f'{data_row2[1]}{data_row2[0]} の提出期限が迫っています。'
-    print(questionary_message)
+    line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
+    line_bot_api.push_message(USER_ID, TextSendMessage(text=questionary_message))
 for data_row3 in kadai_array3:
-    report_message = f'{data_row3[1]}{data_row3[0]} の提出期限が迫っています。'
-    print(report_message)
+    report_message = f'{data_row3[1]}{data_row3[0]} の提出期限が迫っています 。'
+    line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
+    line_bot_api.push_message(USER_ID, TextSendMessage(text=report_message))
 
