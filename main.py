@@ -6,7 +6,8 @@ import configparser
 from bs4 import BeautifulSoup
 import datetime
 from linebot import LineBotApi
-from linebot.models import TextSendMessage
+from linebot.models import FlexSendMessage
+import urllib.parse
 
 #ConfigParserオブジェクトを生成
 config = configparser.ConfigParser()
@@ -85,6 +86,15 @@ today = datetime.datetime.now()
 for tr_tag in soup1.find_all('tr'):
     td_tags = tr_tag.find_all('td')
     minitest_data = [td.text for td in td_tags]
+    # aタグのhref属性を取得
+    a_tags = tr_tag.find_all('a')
+    for a in a_tags:
+        href = a.get('href')
+        if href:
+            # URLを絶対パスに変換して配列に追加
+            base_url ="https://ct.ritsumei.ac.jp/ct/"
+            absolute_url = urllib.parse.urljoin(base_url, href)
+            minitest_data.append(absolute_url)
     if len(minitest_data) > 2 and minitest_data[2] != '期限' and minitest_data[2] != '':
      deadline = datetime.datetime.strptime(minitest_data[2], '%Y-%m-%d %H:%M')
      if datetime.timedelta(hours=0) <= (deadline - today) <= datetime.timedelta(hours=24):#課題の期限を読み取り、一日以内の場合kadai_arrayに追加する
@@ -110,6 +120,15 @@ kadai_array2 = []
 for tr_tag in soup2.find_all('tr'):
     td_tags = tr_tag.find_all('td')
     questionary_data = [td.text for td in td_tags]
+    # aタグのhref属性を取得
+    a_tags = tr_tag.find_all('a')
+    for a in a_tags:
+        href = a.get('href')
+        if href:
+            # URLを絶対パスに変換して配列に追加
+            base_url ="https://ct.ritsumei.ac.jp/ct/"
+            absolute_url = urllib.parse.urljoin(base_url, href)
+            questionary_data.append(absolute_url)
     if len(questionary_data) > 2 and questionary_data[2] != '期限' and questionary_data[2] != '':
      deadline = datetime.datetime.strptime(questionary_data[2], '%Y-%m-%d %H:%M')
      if datetime.timedelta(hours=0) <= (deadline - today) <= datetime.timedelta(hours=24):#課題の期限を読み取り、一日以内の場合kadai_arrayに追加する
@@ -135,17 +154,119 @@ kadai_array3 = []
 for tr_tag in soup3.find_all('tr'):
     td_tags = tr_tag.find_all('td')
     report_data = [td.text for td in td_tags]
+    # aタグのhref属性を取得
+    a_tags = tr_tag.find_all('a')
+    for a in a_tags:
+        href = a.get('href')
+        if href:
+            # URLを絶対パスに変換して配列に追加
+            base_url ="https://ct.ritsumei.ac.jp/ct/"
+            absolute_url = urllib.parse.urljoin(base_url, href)
+            report_data.append(absolute_url)
     if len(report_data) > 2 and report_data[2] != '期限' and report_data[2] != '':
      deadline = datetime.datetime.strptime(report_data[2], '%Y-%m-%d %H:%M')
      if datetime.timedelta(hours=0) <= (deadline - today) <= datetime.timedelta(hours=24):#課題の期限を読み取り、一日以内の場合kadai_arrayに追加する
       kadai_array3.append(report_data)
 
+time_diff=deadline- today
+hours_diff = time_diff.seconds // 3600
+
 # 結果をlinebotが送信
 for kadai_array, category_name in [(kadai_array1, "小テスト"), (kadai_array2, "アンケート"), (kadai_array3, "レポート")]:
     if kadai_array:
         for data_row in kadai_array:
-            message = f'{data_row[1]}\n {data_row[0].strip()}\nの提出期限が迫っています。\n\n期限：{data_row[2].strip()}'
-            line_bot_api.push_message(USER_ID, TextSendMessage(text=message))
+            print(data_row[3])
+            message={
+                "type": "bubble",
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                    {
+                        "type": "text",
+                        "text": data_row[1],
+                        "weight": "bold",
+                        "size": "xl"
+                    },
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "margin": "lg",
+                        "spacing": "sm",
+                        "contents": [
+                        {
+                            "type": "box",
+                            "layout": "baseline",
+                            "contents": [
+                            {
+                                "type": "text",
+                                "text": f'{data_row[0]}の期限が迫っています',
+                                "wrap": True,
+                                "color": "#666666",
+                                "size": "sm",
+                                "flex": 5,
+                                "margin": "md"
+                            }
+                            ],
+                            "spacing": "none",
+                            "margin": "sm"
+                        },
+                        {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                            {
+                                "type": "text",
+                                "text": "期限",
+                                "color": "#aaaaaa",
+                                "size": "sm",
+                                "flex": 1,
+                                "margin": "none"
+                            },
+                            {
+                                "type": "text",
+                                "text": data_row[2],
+                                "wrap": True,
+                                "color": "#666666",
+                                "size": "sm",
+                                "flex": 5
+                            }
+                            ],
+                            "margin": "xl"
+                        }
+                        ]
+                    }
+                    ]
+                },
+                "footer": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "spacing": "sm",
+                    "contents": [
+                    {
+                        "type": "button",
+                        "style": "link",
+                        "height": "sm",
+                        "action": {
+                        "type": "uri",
+                        "uri": data_row[3],
+                        "label": "manaba"
+                        },
+                        "color": "#b8d200"
+                    },
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [],
+                        "margin": "sm"
+                    }
+                    ],
+                    "flex": 0
+                }
+                }
+            flex_message = FlexSendMessage(alt_text='課題',contents=message)
+            line_bot_api.push_message(USER_ID,flex_message)
 
 #webdriverの終了処理
 driver.quit()
