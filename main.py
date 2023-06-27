@@ -140,9 +140,6 @@ for tr_tag in soup3.find_all('tr'):
      if datetime.timedelta(hours=0) <= (deadline - today) <= datetime.timedelta(hours=24):#課題の期限を読み取り、一日以内の場合kadai_arrayに追加する
       kadai_array3.append(report_data)
 
-time_diff=deadline- today
-hours_diff = time_diff.seconds // 3600
-
 # 結果をlinebotが送信
 for kadai_array, category_name in [(kadai_array1, "小テスト"), (kadai_array2, "アンケート"), (kadai_array3, "レポート")]:
     if kadai_array:
