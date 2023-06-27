@@ -80,14 +80,14 @@ soup1 = BeautifulSoup(html, 'html.parser')
 # trタグごとに中のtdタグの情報を取得し、配列に折りたたむ
 #課題の期限を読み取り一日前に迫っている場合配列をkadai_arrayに追加する
 kadai_array1 = []
-today = datetime.date.today()
+today = datetime.datetime.now()
 
 for tr_tag in soup1.find_all('tr'):
     td_tags = tr_tag.find_all('td')
     minitest_data = [td.text for td in td_tags]
     if len(minitest_data) > 2 and minitest_data[2] != '期限' and minitest_data[2] != '':
-     deadline = datetime.datetime.strptime(minitest_data[2], '%Y-%m-%d %H:%M').date()
-     if datetime.timedelta(days=0) <= (deadline - today) <= datetime.timedelta(days=1):
+     deadline = datetime.datetime.strptime(minitest_data[2], '%Y-%m-%d %H:%M')
+     if datetime.timedelta(hours=0) <= (deadline - today) <= datetime.timedelta(hours=24):#課題の期限を読み取り、一日以内の場合kadai_arrayに追加する
       kadai_array1.append(minitest_data)
 
 
@@ -111,8 +111,8 @@ for tr_tag in soup2.find_all('tr'):
     td_tags = tr_tag.find_all('td')
     questionary_data = [td.text for td in td_tags]
     if len(questionary_data) > 2 and questionary_data[2] != '期限' and questionary_data[2] != '':
-     deadline = datetime.datetime.strptime(questionary_data[2], '%Y-%m-%d %H:%M').date()
-     if datetime.timedelta(days=0) <= (deadline - today) <= datetime.timedelta(days=1):
+     deadline = datetime.datetime.strptime(questionary_data[2], '%Y-%m-%d %H:%M')
+     if datetime.timedelta(hours=0) <= (deadline - today) <= datetime.timedelta(hours=24):#課題の期限を読み取り、一日以内の場合kadai_arrayに追加する
       kadai_array2.append(questionary_data)
 
 
@@ -136,16 +136,18 @@ for tr_tag in soup3.find_all('tr'):
     td_tags = tr_tag.find_all('td')
     report_data = [td.text for td in td_tags]
     if len(report_data) > 2 and report_data[2] != '期限' and report_data[2] != '':
-     deadline = datetime.datetime.strptime(report_data[2], '%Y-%m-%d %H:%M').date()
-     if datetime.timedelta(days=0) <= (deadline - today) <= datetime.timedelta(days=1): #課題の期限を読み取り、一日以内の場合kadai_arrayに追加する
+     deadline = datetime.datetime.strptime(report_data[2], '%Y-%m-%d %H:%M')
+     if datetime.timedelta(hours=0) <= (deadline - today) <= datetime.timedelta(hours=24):#課題の期限を読み取り、一日以内の場合kadai_arrayに追加する
       kadai_array3.append(report_data)
 
+time_diff=deadline- today
+hours_diff = time_diff.seconds // 3600
 
 # 結果をlinebotが送信
 for kadai_array, category_name in [(kadai_array1, "小テスト"), (kadai_array2, "アンケート"), (kadai_array3, "レポート")]:
     if kadai_array:
         for data_row in kadai_array:
-            message = f'{data_row[1]}\n {data_row[0].strip()}\nの提出期限が迫っています。'
+            message = f'{data_row[1]}\n {data_row[0].strip()}\nの提出期限が迫っています。\n\n期限：{data_row[2].strip()}'
             line_bot_api.push_message(USER_ID, TextSendMessage(text=message))
 
 #webdriverの終了処理
