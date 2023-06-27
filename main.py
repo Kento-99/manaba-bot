@@ -186,12 +186,12 @@ for kadai_array, category_name in [(kadai_array1, "小テスト"), (kadai_array2
                         "type": "text",
                         "text": data_row[1],
                         "weight": "bold",
-                        "size": "xl"
+                        "size": "lg"
                     },
                     {
                         "type": "box",
                         "layout": "vertical",
-                        "margin": "lg",
+                        "margin": "md",
                         "spacing": "sm",
                         "contents": [
                         {
@@ -200,16 +200,16 @@ for kadai_array, category_name in [(kadai_array1, "小テスト"), (kadai_array2
                             "contents": [
                             {
                                 "type": "text",
-                                "text": f'{data_row[0]}の期限が迫っています',
+                                "text": f'{data_row[0].strip()}の期限が迫っています',
                                 "wrap": True,
                                 "color": "#666666",
-                                "size": "sm",
+                                "size": "md",
                                 "flex": 5,
-                                "margin": "md"
+                                "margin": "sm"
                             }
                             ],
                             "spacing": "none",
-                            "margin": "sm"
+                            "margin": "lg"
                         },
                         {
                             "type": "box",
@@ -220,7 +220,7 @@ for kadai_array, category_name in [(kadai_array1, "小テスト"), (kadai_array2
                                 "type": "text",
                                 "text": "期限",
                                 "color": "#aaaaaa",
-                                "size": "sm",
+                                "size": "md",
                                 "flex": 1,
                                 "margin": "none"
                             },
@@ -229,7 +229,7 @@ for kadai_array, category_name in [(kadai_array1, "小テスト"), (kadai_array2
                                 "text": data_row[2],
                                 "wrap": True,
                                 "color": "#666666",
-                                "size": "sm",
+                                "size": "md",
                                 "flex": 5
                             }
                             ],
