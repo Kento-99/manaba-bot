@@ -1,4 +1,6 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -28,7 +30,7 @@ password =config['DEFAULT']['password']
 # WebDriverでChromeブラウザを起動
 options = webdriver.ChromeOptions()
 options.add_argument('--start-maximized') 
-driver = webdriver.Chrome(options=options)
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
 # manabaのログインページを開く
 driver.get('https://ct.ritsumei.ac.jp/ct/%E3%80%8D')
@@ -172,7 +174,6 @@ for tr_tag in soup3.find_all('tr'):
 for kadai_array, category_name in [(kadai_array1, "小テスト"), (kadai_array2, "アンケート"), (kadai_array3, "レポート")]:
     if kadai_array:
         for data_row in kadai_array:
-            print(data_row[3])
             message={
                 "type": "bubble",
                 "body": {
