@@ -1,5 +1,5 @@
 # ワークフロー名
-name: housework_bot
+name: manaba_bot
 on:
   schedule:
     # 定期実行する時間・・・①
