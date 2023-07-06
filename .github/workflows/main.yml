@@ -1,9 +1,12 @@
 # ワークフロー名
 name: manaba_bot
+
 on:
-  schedule: 
-    # 定期実行する時間・・・①
-    - cron: '0 3 * * *'
+  workflow_dispatch:
+# on:
+#   schedule: 
+#     # 定期実行する時間・・・①
+#     - cron: '0 3 * * *'
     
 env:
  CHANNEL_ACCESS_TOKEN: ${{secrets.CHANNEL_ACCESS_TOKEN}}
