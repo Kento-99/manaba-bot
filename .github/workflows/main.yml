@@ -35,6 +35,7 @@ jobs:
           # pip更新
           python -m pip install --upgrade pip
           # 必要なパッケージインストール・・・②
+          pip install get-chrome-driver --upgrade
           pip install chromedriver-autoinstaller
           pip install line-bot-sdk
           pip install beautifulsoup4
