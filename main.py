@@ -33,6 +33,12 @@ password =os.environ['password']
 # WebDriverでChromeブラウザを起動
 options = webdriver.ChromeOptions()
 options.add_argument('--headless')
+options.add_arguments("--disable-dev-shm-usage")
+options.add_arguments("start-maximized")
+options.add_arguments("disable-infobars")
+options.add_arguments("--disable-extensions")
+options.add_arguments("--disable-gpu"); 
+options.add_arguments("--no-sandbox");
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
 # manabaのログインページを開く
