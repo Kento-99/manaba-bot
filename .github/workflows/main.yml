@@ -26,16 +26,16 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.8
+      - name: Install Chrome
+        run: |
+          sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo apt update
+          sudo apt-get install google-chrome-stabl
       - name: Install dependencies
         run: |
-          # .debダウンロード
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          # ローカルに保存された.debファイルからインストール
-          sudo apt install ./google-chrome-stable_current_amd64.deb
           # pip更新
           python -m pip install --upgrade pip
-          # 必要なパッケージインストール・・・②
-          pip install get-chrome-driver --upgrade
+          # 必要なパッケージインストール
           pip install chromedriver-autoinstaller
           pip install line-bot-sdk
           pip install beautifulsoup4
@@ -44,5 +44,5 @@ jobs:
           
       - name: Run script
         run: |
-          # 定期実行するファイルを指定。・・・③
+          # 定期実行するファイルを指定。
           python main.py
