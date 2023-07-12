@@ -29,7 +29,6 @@ password =config['DEFAULT']['password']
 
 # WebDriverでChromeブラウザを起動
 options = webdriver.ChromeOptions()
-options.add_argument('--start-maximized') 
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
 # manabaのログインページを開く
