@@ -30,7 +30,7 @@ jobs:
         run: |
           sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
           sudo apt update
-          sudo apt-get install google-chrome-stabl
+          sudo apt-get install google-chrome-stable
       - name: Install dependencies
         run: |
           # pip更新
