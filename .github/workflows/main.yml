@@ -1,10 +1,19 @@
 # ワークフロー名
-name: housework_bot
-on:
-  schedule:
-    # 定期実行する時間・・・①
-    - cron: '0 3 * * *'
+name: manaba_bot
 
+on:
+  workflow_dispatch:
+# on:
+#   schedule: 
+#     # 定期実行する時間・・・①
+#     - cron: '0 3 * * *'
+    
+env:
+ CHANNEL_ACCESS_TOKEN: ${{secrets.CHANNEL_ACCESS_TOKEN}}
+ USER_ID: ${{secrets.USER_ID}}
+ username: ${{secrets.username}}
+ password: ${{secrets.password}}
+ 
 jobs:
   build:
     # Ubuntuの最新版環境内で処理を実行することを指定
@@ -22,9 +31,12 @@ jobs:
           # pip更新
           python -m pip install --upgrade pip
           # 必要なパッケージインストール・・・②
-          pip install numpy
-          pip install pandas
-
+          pip install chromedriver-autoinstaller
+          pip install line-bot-sdk
+          pip install beautifulsoup4
+          pip install webdriver_manager
+          pip install selenium
+          
       - name: Run script
         run: |
           # 定期実行するファイルを指定。・・・③

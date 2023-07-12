@@ -10,29 +10,32 @@ import datetime
 from linebot import LineBotApi
 from linebot.models import FlexSendMessage
 import urllib.parse
+import os
 
-#ConfigParserオブジェクトを生成
-config = configparser.ConfigParser()
+# #ConfigParserオブジェクトを生成
+# config = configparser.ConfigParser()
 
-#設定ファイル読み込み
-config.read('config.ini')
+# #設定ファイル読み込み
+# config.read('config.ini')
 
 #linebotの送信前準備
-CHANNEL_ACCESS_TOKEN = config['DEFAULT']['CHANNEL_ACCESS_TOKEN'] 
-USER_ID = config['DEFAULT']['USER_ID'] 
+# CHANNEL_ACCESS_TOKEN = config['DEFAULT']['CHANNEL_ACCESS_TOKEN'] 
+CHANNEL_ACCESS_TOKEN = os.environ['CHANNEL_ACCESS_TOKEN'] 
+# USER_ID = config['DEFAULT']['USER_ID'] 
+USER_ID = os.environ['USER_ID'] 
 
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 
 # ログインに使用するユーザー名とパスワード
-username =config['DEFAULT']['username']
-password =config['DEFAULT']['password']
+username =os.environ['username'] 
+password =os.environ['password'] 
 
 # WebDriverでChromeブラウザを起動
 options = webdriver.ChromeOptions()
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
 # manabaのログインページを開く
-driver.get('https://ct.ritsumei.ac.jp/ct/%E3%80%8D')
+driver.get('https://ct.ritsumei.ac.jp/ct/')
 
 # ユーザー名とパスワードを入力してログイン
 wait = WebDriverWait(driver,20)
