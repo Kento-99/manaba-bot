@@ -31,7 +31,6 @@ jobs:
           sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
           sudo apt update
           sudo apt-get install google-chrome-stable
-          sudo apt-get install -y chromium-chromedriver
       - name: Install dependencies
         run: |
           # pip更新
@@ -39,6 +38,7 @@ jobs:
           # 必要なパッケージインストール
           pip install line-bot-sdk
           pip install beautifulsoup4
+          pip install webdriver_manager
           pip install selenium
           
       - name: Run script
