@@ -28,6 +28,10 @@ jobs:
           python-version: 3.8
       - name: Install dependencies
         run: |
+          # .debダウンロード
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          # ローカルに保存された.debファイルからインストール
+          sudo apt install ./google-chrome-stable_current_amd64.deb
           # pip更新
           python -m pip install --upgrade pip
           # 必要なパッケージインストール・・・②
