@@ -32,6 +32,7 @@ password =os.environ['password']
 
 # WebDriverでChromeブラウザを起動
 options = webdriver.ChromeOptions()
+options.add_argument('--headless')
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
 # manabaのログインページを開く
